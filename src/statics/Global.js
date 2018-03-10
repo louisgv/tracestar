@@ -14,16 +14,16 @@ app.Global = Object.freeze({
     HALF_PI: Math.PI / 2,
     TWO_PI: Math.PI * 2,
     COLOR: {
-        WHITE: "#EEEEEE",
-        BLACK: "#333333",
-        RED: "#FD5B78",
+        BLANK: "#EEEEEE",
+        WALL: "#333333",
+        VISITED: "#FD5B78",
         REDORANGE: "#FF6037",
         ORANGE: "#FF9966",
         YELLOW: "#FFFF66",
-        GREEN: "#66FF66",
-        BLUE: "#50BFE6",
+        QUEUED: "#66FF66",
+        START: "#50BFE6",
         PINK: "#FF6EFF",
-        PURPLE: "#EE34D2"
+        END: "#EE34D2"
     },
     KEYBOARD: {
         KEY_LEFT: 37,

@@ -80,6 +80,12 @@ var app = app || {};
                 bottomCenter: fifthSize
             };
 
+            this.config.textLabel = {
+                topLeft: 'g: ',
+                topRight: 'h: ',
+                bottomCenter: 'F: '
+            };
+
             this.config.textAlignAndBaseline = {
                 topLeft: [
                     "left", "bottom"
@@ -114,7 +120,9 @@ var app = app || {};
                     this.nodeCache[x][y] = new GridNode(new Vector2(
                         x * (this.config.totalNodeSize) + this.config.nodeSize,
                         y * (this.config.totalNodeSize) + this.config.nodeSize,
-                    ), this.config.nodeSize, this.config, Global.COLOR.WHITE, Global.COLOR.BLACK);
+                    ), this.config.nodeSize, this.config, Global.COLOR.BLANK, Global.COLOR.WALL);
+
+                    this.nodeCache[x][y].text.topLeft = this.getHeuristic(x, y);
                 }
             }
 
@@ -124,7 +132,7 @@ var app = app || {};
                 .forEach(([x, y]) => {
                     this
                         .nodeCache[x][y]
-                        .color = Global.COLOR.BLACK;
+                        .color = Global.COLOR.WALL;
                 });
 
             this
@@ -137,7 +145,7 @@ var app = app || {};
                         .config
                         .start[1]
                 ]
-                .color = Global.COLOR.BLUE;
+                .color = Global.COLOR.START;
 
             this
                 .nodeCache[
@@ -149,8 +157,59 @@ var app = app || {};
                         .config
                         .end[1]
                 ]
-                .color = Global.COLOR.PURPLE;
+                .color = Global.COLOR.END;
 
+            this.markNeighbors(this.config.start[0], this.config.start[1]);
+        }
+
+        getHeuristic(x, y) {
+            return Math.abs(x - this.config.end[0]) + Math.abs(y - this.config.end[1]);
+        }
+
+        getNeighbors(x, y) {
+            const neighbors = [];
+            if (this.nodeCache[x] && this.nodeCache[x][y + 1]) {
+                neighbors.push(this.nodeCache[x][y + 1]);
+            }
+
+            if (this.nodeCache[x + 1] && this.nodeCache[x + 1][y]) {
+                neighbors.push(this.nodeCache[x + 1][y]);
+            }
+
+            if (this.nodeCache[x - 1] && this.nodeCache[x - 1][y]) {
+                neighbors.push(this.nodeCache[x - 1][y]);
+            }
+
+            if (this.nodeCache[x] && this.nodeCache[x][y - 1]) {
+                neighbors.push(this.nodeCache[x][y - 1]);
+            }
+
+            return neighbors;
+        }
+
+        markNeighbors(x, y) {
+            const currentNode = this.nodeCache[x][y];
+
+            const neighbors = this.getNeighbors(x, y);
+
+            neighbors.forEach((n) => {
+                if (!this.isAvailableNode(n)) {
+                    return;
+                }
+                n.color = Global.COLOR.QUEUED;
+
+                n.text.topRight = currentNode.text.topRight + 1;
+
+                n.text.bottomCenter = n.text.topLeft + n.text.topRight;
+            });
+            if (this.isAvailableNode(currentNode)) {
+                currentNode.color = Global.COLOR.VISITED;
+            }
+        }
+
+        isAvailableNode(currentNode) {
+            return currentNode.color == Global.COLOR.BLANK ||
+                currentNode.color == Global.COLOR.QUEUED;
         }
 
         processMouseInput(mouse) {
@@ -162,13 +221,13 @@ var app = app || {};
             ) + 1;
 
             if (this.nodeCache[x] && this.nodeCache[x][y]) {
-                if (this.nodeCache[x][y].color == Global.COLOR.BLACK) {
+                const currentNode = this.nodeCache[x][y];
+
+                if (currentNode.color != Global.COLOR.QUEUED) {
                     return;
                 }
 
-                this
-                    .nodeCache[x][y]
-                    .color = Global.COLOR.GREEN;
+                this.markNeighbors(x, y);
             }
         }
 

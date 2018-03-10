@@ -17,7 +17,7 @@ var app = app || {};
         constructor(pos = new Vector2(), size = 10, textConfig = {}, color = 'white', textColor = 'black', text = {
             topLeft: 0,
             topRight: 0,
-            bottomCenter: 'S'
+            bottomCenter: 0
         }) {
             super(pos, size, color);
             this.text = text;
@@ -31,6 +31,8 @@ var app = app || {};
             this.textArgv = textConfig.textArgv;
 
             this.texts = textConfig.texts;
+
+            this.textLabel = textConfig.textLabel;
         }
 
         draw(ctx) {
@@ -48,7 +50,7 @@ var app = app || {};
                 ctx.textAlign = this.textAlignAndBaseline[t][0];
                 ctx.baseline = this.textAlignAndBaseline[t][1];
                 ctx.translate.apply(ctx, this.textArgv[t]);
-                ctx.fillText(this.text[t], 0, 0);
+                ctx.fillText(`${this.textLabel[t]}: ${this.text[t]}`, 0, 0);
 
                 ctx.restore();
             });
