@@ -14,7 +14,7 @@ var app = app || {};
     const {Square, Vector2} = app;
 
     app.GridNode = class extends Square {
-        constructor(pos = new Vector2(), size = 10, color = 'white', textColor='black', text = {
+        constructor(pos = new Vector2(), size = 10, textConfig = {}, color = 'white', textColor = 'black', text = {
             topLeft: 0,
             topRight: 0,
             bottomCenter: 'S'
@@ -22,39 +22,15 @@ var app = app || {};
             super(pos, size, color);
             this.text = text;
             this.textColor = textColor;
-            this.sixthSize = this.size/6;
-            this.fifthSize = this.size / 5;
 
             // TODO: Cache these config somewhere else
-            this.textSize = {
-                topLeft: this.sixthSize,
-                topRight: this.sixthSize,
-                bottomCenter: this.fifthSize
-            };
+            this.textSize = textConfig.textSize;
 
-            this.textAlignAndBaseline = {
-                topLeft: [
-                    "left", "bottom"
-                ],
-                topRight: [
-                    "right", "bottom"
-                ],
-                bottomCenter: ["center", "middle"]
-            };
+            this.textAlignAndBaseline = textConfig.textAlignAndBaseline;
 
-            this.textArgv = {
-                topLeft: [
-                    this.sixthSize, this.fifthSize
-                ],
-                topRight: [
-                    this.size-this.sixthSize, this.fifthSize + this.sixthSize
-                ],
-                bottomCenter: [
-                    this.halfSize, this.fifthSize * 4
-                ]
-            };
+            this.textArgv = textConfig.textArgv;
 
-            this.texts = Object.keys(this.text);
+            this.texts = textConfig.texts;
         }
 
         draw(ctx) {

@@ -13,6 +13,18 @@ var app = app || {};
 app.Global = Object.freeze({
     HALF_PI: Math.PI / 2,
     TWO_PI: Math.PI * 2,
+    COLOR: {
+        WHITE: "#EEEEEE",
+        BLACK: "#333333",
+        RED: "#FD5B78",
+        REDORANGE: "#FF6037",
+        ORANGE: "#FF9966",
+        YELLOW: "#FFFF66",
+        GREEN: "#66FF66",
+        BLUE: "#50BFE6",
+        PINK: "#FF6EFF",
+        PURPLE: "#EE34D2"
+    },
     KEYBOARD: {
         KEY_LEFT: 37,
         KEY_UP: 38,

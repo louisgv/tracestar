@@ -40,15 +40,16 @@ var app = app || {};
          *
          */
         halt() {
+            // document.querySelector('#halt-notice').classList.add('enabled');
             this.paused = true;
             cancelAnimationFrame(this.animationID);
             this.update();
-
         }
 
         /** Resume the application
          */
         resume() {
+            // document.querySelector('#halt-notice').classList.remove('enabled');
             cancelAnimationFrame(this.animationID);
             this.paused = false;
             this.update();
