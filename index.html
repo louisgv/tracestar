@@ -57,13 +57,8 @@
 	        charset="utf-8"></script>
 	<script src="./src/statics/Interface.js"
 	        charset="utf-8"></script>
-	<script src="./src/components/FilterConfig.js"
-		charset="utf-8"></script>
-	<script src="./src/components/PatternConfig.js"
-		charset="utf-8"></script>
-	<script src="./src/components/EffectConfig.js"
-		charset="utf-8"></script>
 
+	<!-- region Basic Shape -->
 	<script src="./src/components/basic/Square.js"
 	        charset="utf-8"></script>
 	<script src="./src/components/basic/Circle.js"
@@ -71,32 +66,22 @@
 	<script src="./src/components/basic/Triangle.js"
 	        charset="utf-8"></script>
 	<script src="./src/components/basic/Diamond.js"
-		charset="utf-8"></script>
+	        charset="utf-8"></script>
+	<!-- endregion Basic Shape -->
 
-	<script src="./src/components/FilterConfigUI.js"
-		charset="utf-8"></script>
-	<script src="./src/components/PatternConfigUI.js"
-		charset="utf-8"></script>
-	<script src="./src/components/EffectConfigUI.js"
-		charset="utf-8"></script>
+	<script src="./src/components/grid/GridNode.js"
+	        charset="utf-8"></script>
 
+	<!-- region Pattern -->
 	<script src="./src/components/pattern/ShapeGrid.js"
-		charset="utf-8"></script>
+	        charset="utf-8"></script>
 	<script src="./src/components/pattern/ShapeAltGrid.js"
-		charset="utf-8"></script>
-
-	<script src="./src/components/filter/Kaleidoscope.js"
-		charset="utf-8"></script>
-
-	<script src="./src/components/effect/Noise.js"
-		charset="utf-8"></script>
-
-	<script src="./src/components/Pattern.js"
-		charset="utf-8"></script>
-	<script src="./src/components/Effect.js"
 	        charset="utf-8"></script>
-	<script src="./src/components/Filter.js"
-	        charset="utf-8"></script>
+	<!-- region Pattern -->
+
+	<script src="./src/components/Grid.js"
+			charset="utf-8"></script>
+
 	<script src="./src/components/Keyboard.js"
 	        charset="utf-8"></script>
 	<script src="./src/components/Sound.js"
@@ -123,23 +108,14 @@
 
 		<button id="toggleui-button"
 		        class="button interactive"
-			title="Click to Toggle UI">x</button>
+		        title="Click to Toggle UI">x</button>
 
 		<div class="toggle-target interactive">
 			<div id="pattern-ui-config"
-				class="flex-column">
+			     class="flex-column">
 				<label class="generic-label">
 					<span>
 						Pattern
-					</span>
-				</label>
-			</div>
-
-			<div id="filter-ui-config"
-				class="flex-column">
-				<label class="generic-label">
-					<span>
-						Filter
 					</span>
 				</label>
 			</div>

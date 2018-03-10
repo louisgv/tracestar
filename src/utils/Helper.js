@@ -27,6 +27,12 @@ var app = app || {};
         // Create a quick canvas context for temporary drawing.
         createCtx: () => document.createElement("canvas").getContext('2d'),
 
+        // Set the ctx's canvas to full window inner size
+        setFullsizeCtx(ctx){
+            ctx.canvas.width = window.innerWidth;
+            ctx.canvas.height = window.innerHeight;
+        },
+
         // Toggle all toggle target based on the menu button state
         toggleUIElement(e) {
 
