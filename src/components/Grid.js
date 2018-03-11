@@ -40,7 +40,8 @@ var app = app || {};
                 [
                     6, 2
                 ]
-            ]
+            ],
+            pathFound: false
         }) {
             this.config = config;
 
@@ -81,28 +82,29 @@ var app = app || {};
             };
 
             this.config.textLabel = {
-                topLeft: 'g: ',
-                topRight: 'h: ',
+                topLeft: 'h: ',
+                topRight: 'g: ',
                 bottomCenter: 'F: '
             };
 
             this.config.textAlignAndBaseline = {
                 topLeft: [
-                    "left", "bottom"
+                    "center", "bottom"
                 ],
                 topRight: [
-                    "right", "bottom"
+                    "center", "bottom"
                 ],
                 bottomCenter: ["center", "middle"]
             };
 
             this.config.textArgv = {
                 topLeft: [
-                    sixthSize, fifthSize + sixthSize / 2
+                    this.config.nodeSize / 2,
+                    fifthSize + sixthSize / 2
                 ],
                 topRight: [
-                    this.config.nodeSize - sixthSize,
-                    fifthSize + sixthSize * 1.5
+                    this.config.nodeSize / 2,
+                    fifthSize * 2 + sixthSize / 2
                 ],
                 bottomCenter: [
                     this.config.nodeSize / 2,
@@ -122,7 +124,10 @@ var app = app || {};
                         y * (this.config.totalNodeSize) + this.config.nodeSize,
                     ), this.config.nodeSize, this.config, Global.COLOR.BLANK, Global.COLOR.WALL);
 
-                    this.nodeCache[x][y].text.topLeft = this.getHeuristic(x, y);
+                    this
+                        .nodeCache[x][y]
+                        .text
+                        .topLeft = this.getHeuristic(x, y);
                 }
             }
 
@@ -135,6 +140,7 @@ var app = app || {};
                         .color = Global.COLOR.WALL;
                 });
 
+            const startNode =
             this
                 .nodeCache[
                     this
@@ -144,20 +150,26 @@ var app = app || {};
                     this
                         .config
                         .start[1]
-                ]
-                .color = Global.COLOR.START;
+                ];
+            startNode.color = Global.COLOR.START;
+            startNode.text.bottomCenter = 'START';
+            startNode.textLabel = {
+                topLeft: 'h: '
+            };
 
-            this
-                .nodeCache[
-                    this
-                        .config
-                        .end[0]
-                ][
-                    this
-                        .config
-                        .end[1]
-                ]
-                .color = Global.COLOR.END;
+            const endNode = this.nodeCache[
+                this
+                    .config
+                    .end[0]
+            ][
+                this
+                    .config
+                    .end[1]
+            ];
+
+            endNode.color = Global.COLOR.END;
+            endNode.text.bottomCenter = 'END';
+            endNode.textLabel = {};
 
             this.markNeighbors(this.config.start[0], this.config.start[1]);
         }
@@ -193,14 +205,35 @@ var app = app || {};
             const neighbors = this.getNeighbors(x, y);
 
             neighbors.forEach((n) => {
+                if (n.color == Global.COLOR.END) {
+                    this.config.pathFound = true;
+                    let trace = currentNode;
+                    while (trace.color != Global.COLOR.START) {
+                        trace.color = Global.COLOR.PATH;
+                        trace = trace.origin;
+                    }
+                }
+
                 if (!this.isAvailableNode(n)) {
                     return;
                 }
+
                 n.color = Global.COLOR.QUEUED;
 
-                n.text.topRight = currentNode.text.topRight + 1;
+                const newCost = currentNode.text.topRight + 1;
+
+                // If node is visited and new cost is more, return
+                if (n.visited && newCost >= n.text.topRight) {
+                    return;
+                }
+
+                n.visited = true;
+
+                n.text.topRight = newCost;
 
                 n.text.bottomCenter = n.text.topLeft + n.text.topRight;
+
+                n.origin = currentNode;
             });
             if (this.isAvailableNode(currentNode)) {
                 currentNode.color = Global.COLOR.VISITED;
@@ -208,8 +241,7 @@ var app = app || {};
         }
 
         isAvailableNode(currentNode) {
-            return currentNode.color == Global.COLOR.BLANK ||
-                currentNode.color == Global.COLOR.QUEUED;
+            return currentNode.color == Global.COLOR.BLANK || currentNode.color == Global.COLOR.QUEUED;
         }
 
         processMouseInput(mouse) {

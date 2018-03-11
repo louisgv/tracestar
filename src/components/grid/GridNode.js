@@ -44,13 +44,16 @@ var app = app || {};
 
             ctx.fillStyle = this.textColor;
             this.texts.forEach((t) => {
+                if (this.text[t] == 0) {
+                    return;
+                }
                 ctx.save();
 
                 ctx.font = `${this.textSize[t]}px comfortaa`;
                 ctx.textAlign = this.textAlignAndBaseline[t][0];
                 ctx.baseline = this.textAlignAndBaseline[t][1];
                 ctx.translate.apply(ctx, this.textArgv[t]);
-                ctx.fillText(`${this.textLabel[t]}: ${this.text[t]}`, 0, 0);
+                ctx.fillText(`${this.textLabel[t]||''}${this.text[t]}`, 0, 0);
 
                 ctx.restore();
             });

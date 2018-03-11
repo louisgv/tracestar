@@ -17,7 +17,7 @@ app.Global = Object.freeze({
         BLANK: "#EEEEEE",
         WALL: "#333333",
         VISITED: "#FD5B78",
-        REDORANGE: "#FF6037",
+        PATH: "#FF6037",
         ORANGE: "#FF9966",
         YELLOW: "#FFFF66",
         QUEUED: "#66FF66",
