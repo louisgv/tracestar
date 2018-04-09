@@ -24,6 +24,7 @@ var app = app || {};
             this.drawpad = undefined;
             this.animationID = 0;
             this.paused = false;
+            this.debug = true;
         }
 
         /** Setup the main process and start animation
@@ -91,6 +92,19 @@ var app = app || {};
             let dt = this.getDeltaTime();
 
             this.drawpad.render(dt);
+        }
+
+        /** Handle user input in late update
+         *
+        */
+        lateUpdate() {
+            if (!this.keyboard) {
+                return;
+            }
+
+            // if (this.keyboard.isComboDown('GENERATE')) {
+            //     this.drawpad.grid.();
+            // }
         }
 
         /** Calculate the delta time

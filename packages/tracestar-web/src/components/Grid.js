@@ -56,17 +56,23 @@ var app = app || {};
             const totalNodeSize = nodeSize + paddingSize;
 
             this.config.renderSize = window.innerWidth > window.innerHeight
-                ? new Vector2(
-                    Math.floor(window.innerWidth / totalNodeSize) - 1,
-                    Math.floor(1 / this.config.sideScale) - 1
-                )
-                : new Vector2(
-                    Math.floor(1 / this.config.sideScale) - 1,
-                    Math.floor(window.innerHeight / totalNodeSize) - 1
-                );
+                ? new Vector2(Math.floor(window.innerWidth / totalNodeSize) - 1, Math.floor(1 / this.config.sideScale) - 1)
+                : new Vector2(Math.floor(1 / this.config.sideScale) - 1, Math.floor(window.innerHeight / totalNodeSize) - 1);
 
             this.config.nodeSize = nodeSize;
             this.config.totalNodeSize = totalNodeSize;
+
+            this.config.end = [
+                Helper.getRandomInt(1, this.config.renderSize.x - 1),
+                Helper.getRandomInt(1, this.config.renderSize.y - 1)
+            ];
+
+            this.config.start = [
+                Helper.getRandomInt(1, this.config.renderSize.x - 1),
+                Helper.getRandomInt(1, this.config.renderSize.y - 1)
+            ];
+
+            this.config.walls = this.generateRandomWall(this.config.start, this.config.end);
 
             this.updateCache();
         }
@@ -119,53 +125,24 @@ var app = app || {};
             for (let x = 0; x < this.config.renderSize.x; x++) {
                 this.nodeCache[x] = new Array(this.config.renderSize.y);
                 for (let y = 0; y < this.config.renderSize.y; y++) {
-                    this.nodeCache[x][y] = new GridNode(new Vector2(
-                        x * (this.config.totalNodeSize) + this.config.nodeSize,
-                        y * (this.config.totalNodeSize) + this.config.nodeSize,
-                    ), this.config.nodeSize, this.config, Global.COLOR.BLANK, Global.COLOR.WALL);
+                    this.nodeCache[x][y] = new GridNode(new Vector2(x * (this.config.totalNodeSize) + this.config.nodeSize, y * (this.config.totalNodeSize) + this.config.nodeSize,), this.config.nodeSize, this.config, Global.COLOR.BLANK, Global.COLOR.WALL);
 
-                    this
-                        .nodeCache[x][y]
-                        .text
-                        .topLeft = this.getHeuristic(x, y);
+                    this.nodeCache[x][y].text.topLeft = this.getHeuristic(x, y);
                 }
             }
 
-            this
-                .config
-                .walls
-                .forEach(([x, y]) => {
-                    this
-                        .nodeCache[x][y]
-                        .color = Global.COLOR.WALL;
-                });
+            this.config.walls.forEach(([x, y]) => {
+                this.nodeCache[x][y].color = Global.COLOR.WALL;
+            });
 
-            const startNode =
-            this
-                .nodeCache[
-                    this
-                        .config
-                        .start[0]
-                ][
-                    this
-                        .config
-                        .start[1]
-                ];
+            const startNode = this.nodeCache[this.config.start[0]][this.config.start[1]];
             startNode.color = Global.COLOR.START;
             startNode.text.bottomCenter = 'START';
             startNode.textLabel = {
                 topLeft: 'h: '
             };
 
-            const endNode = this.nodeCache[
-                this
-                    .config
-                    .end[0]
-            ][
-                this
-                    .config
-                    .end[1]
-            ];
+            const endNode = this.nodeCache[this.config.end[0]][this.config.end[1]];
 
             endNode.color = Global.COLOR.END;
             endNode.text.bottomCenter = 'END';
@@ -174,10 +151,161 @@ var app = app || {};
             this.markNeighbors(this.config.start[0], this.config.start[1]);
         }
 
+        // Generate a random wall
+        generateRandomWall([
+            startX, startY
+        ], [endX, endY]) {
+            const randomPoint = new Vector2(Helper.getRandomInt(startX, endX), Helper.getRandomInt(startY, endY));
+
+            const wallShapes = {
+                T1: [
+                    [
+                        -1, 0
+                    ],
+                    [
+                        1, 0
+                    ],
+                    [
+                        0, 1
+                    ]
+                ],
+                T2: [
+                    [
+                        0, -1
+                    ],
+                    [
+                        1, 0
+                    ],
+                    [
+                        0, 1
+                    ]
+                ],
+                T3: [
+                    [
+                        1, 0
+                    ],
+                    [
+                        -1, 0
+                    ],
+                    [
+                        0, -1
+                    ]
+                ],
+                T4: [
+                    [
+                        0, 1
+                    ],
+                    [
+                        -1, 0
+                    ],
+                    [
+                        0, -1
+                    ]
+                ],
+                LR1: [
+                    [
+                        2, 0
+                    ],
+                    [
+                        1, 0
+                    ],
+                    [
+                        0, 1
+                    ]
+                ],
+                LR2: [
+                    [
+                        2, 0
+                    ],
+                    [
+                        1, 0
+                    ],
+                    [
+                        0, -1
+                    ]
+                ],
+                LR3: [
+                    [
+                        -2, 0
+                    ],
+                    [
+                        -1, 0
+                    ],
+                    [
+                        0, -1
+                    ]
+                ],
+                LR4: [
+                    [
+                        -2, 0
+                    ],
+                    [
+                        -1, 0
+                    ],
+                    [
+                        0, 1
+                    ]
+                ],
+                LL1: [
+                    [
+                        0, 2
+                    ],
+                    [
+                        0, 1
+                    ],
+                    [
+                        1, 0
+                    ]
+                ],
+                LL2: [
+                    [
+                        0, 2
+                    ],
+                    [
+                        0, 1
+                    ],
+                    [
+                        -1, 0
+                    ]
+                ],
+                LL3: [
+                    [
+                        0, -2
+                    ],
+                    [
+                        0, -1
+                    ],
+                    [
+                        -1, 0
+                    ]
+                ],
+                LL4: [
+                    [
+                        0, -2
+                    ],
+                    [
+                        0, -1
+                    ],
+                    [
+                        1, 0
+                    ]
+                ]
+            };
+
+            const wallShape = wallShapes.T3;
+
+            return wallShape.map(([x, y]) => [
+                randomPoint.x + x,
+                randomPoint.y + y
+            ]);
+        }
+
+        // Return the heuristic for a point given an end
         getHeuristic(x, y) {
             return Math.abs(x - this.config.end[0]) + Math.abs(y - this.config.end[1]);
         }
 
+        // Get neighbor for a certain node
         getNeighbors(x, y) {
             const neighbors = [];
             if (this.nodeCache[x] && this.nodeCache[x][y + 1]) {
@@ -245,12 +373,8 @@ var app = app || {};
         }
 
         processMouseInput(mouse) {
-            const x = Math.floor(
-                (mouse.x - this.config.nodeSize * 1.5) / (this.config.totalNodeSize)
-            ) + 1;
-            const y = Math.floor(
-                (mouse.y - this.config.nodeSize * 1.5) / (this.config.totalNodeSize)
-            ) + 1;
+            const x = Math.floor((mouse.x - this.config.nodeSize * 1.5) / (this.config.totalNodeSize)) + 1;
+            const y = Math.floor((mouse.y - this.config.nodeSize * 1.5) / (this.config.totalNodeSize)) + 1;
 
             if (this.nodeCache[x] && this.nodeCache[x][y]) {
                 const currentNode = this.nodeCache[x][y];
@@ -269,13 +393,11 @@ var app = app || {};
             ctx.fillStyle = 'black';
             ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-            this
-                .nodeCache
-                .forEach((row) => {
-                    row.forEach((node) => {
-                        node.draw(ctx);
-                    });
+            this.nodeCache.forEach((row) => {
+                row.forEach((node) => {
+                    node.draw(ctx);
                 });
+            });
 
             ctx.restore();
         }

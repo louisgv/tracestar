@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://louisgv.me/tracestar/">
-    <img alt="vize" src="https://github.com/louisgv/tracestar/blob/master/media/icon.png" width="234">
+    <img alt="vize" src="https://github.com/louisgv/tracestar/blob/master/icon.png" width="234">
   </a>
 </p>
 

@@ -1,0 +1,20 @@
+{
+  "name": "tracestar-web",
+  "version": "1.0.0",
+  "description": "The web UI for tracestar.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "browser-sync start --no-open --server --files '.'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louisgv/tracestar.git"
+  },
+  "author": "@lgvichy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/louisgv/tracestar/issues"
+  },
+  "homepage": "https://github.com/louisgv/tracestar#readme"
+}
