@@ -10,6 +10,7 @@
         "watch": "lerna run watch --parallel"
     },
     "devDependencies": {
+        "yarn": "*",
         "lerna": "^2.5.1",
         "rimraf": "^2.6.2"
     },
