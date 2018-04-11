@@ -24,14 +24,14 @@ var app = app || {};
             this.drawpad = undefined;
             this.animationID = 0;
             this.paused = false;
-            this.debug = true;
+            this.initialized = false;
         }
 
         /** Setup the main process and start animation
          *
          */
-        init() {
-            this.setupUI();
+        async init() {
+            await this.setupUI();
 
             // start animation loop
             this.update();
@@ -60,22 +60,25 @@ var app = app || {};
         /** Setup any caching layer of any module it depends on.
          *
          */
-        setupCache() {
-            this.drawpad.setupCache();
+        async setupCache() {
+            await this.drawpad.setupCache();
         }
 
         /** UI Setup for the main application
          *
          */
-        setupUI() {
+        async setupUI() {
             const toggleUIButton = document.querySelector('#toggleui-button');
             toggleUIButton.addEventListener('click', Helper.toggleUIElement);
 
-            setTimeout(() => {
-                toggleUIButton.dispatchEvent(new Event('click'));
-            }, 900);
+            await this.drawpad.setupUI();
 
-            this.drawpad.setupUI();
+            await this.drawpad.setupCache();
+
+            await Helper.wait(900);
+
+            toggleUIButton.dispatchEvent(new Event('click'));
+            this.initialized = true;
         }
 
         /** Update loop for animation
@@ -85,7 +88,7 @@ var app = app || {};
             // this schedules a call to the update() method in 1/60 seconds
             this.animationID = requestAnimationFrame(() => this.update());
 
-            if (this.paused) {
+            if (this.paused || !this.initialized) {
                 return;
             }
 

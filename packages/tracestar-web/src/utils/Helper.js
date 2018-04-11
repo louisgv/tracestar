@@ -31,6 +31,13 @@ var app = app || {};
             ctx.canvas.height = window.innerHeight;
         },
 
+        getUrlQueryString(origin, qs) {
+            // https://fetch.spec.whatwg.org/#fetch-api
+            const url = new URL(origin);
+            Object.keys(qs).forEach(key => url.searchParams.append(key, qs[key]));
+            return url;
+        },
+
         // Toggle all toggle target based on the menu button state
         toggleUIElement(e) {
 

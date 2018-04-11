@@ -9,38 +9,15 @@
 "use strict";
 var app = app || {};
 (function() {
-    const {Vector2, Global, Helper, GridNode} = app;
+    const {Vector2, Fetcher, Global, Helper, GridNode} = app;
 
     app.Grid = class {
         constructor(config = {
             sideScale: 0.16,
             padding: 0.02,
-            start: [
-                8, 4
-            ],
-            end: [
-                3, 1
-            ],
-            walls: [
-                [
-                    2, 1
-                ],
-                [
-                    2, 2
-                ],
-                [
-                    3, 2
-                ],
-                [
-                    4, 2
-                ],
-                [
-                    5, 2
-                ],
-                [
-                    6, 2
-                ]
-            ],
+            start: [],
+            end: [],
+            walls: [],
             pathFound: false
         }) {
             this.config = config;
@@ -49,7 +26,7 @@ var app = app || {};
         }
 
         // Update config based on the canvas
-        updateConfig(canvas) {
+        async updateConfig(canvas) {
             const windowMinSize = Math.min(window.innerWidth, window.innerHeight);
             const nodeSize = windowMinSize * this.config.gridNodeScale;
             const paddingSize = windowMinSize * this.config.padding;
@@ -62,17 +39,15 @@ var app = app || {};
             this.config.nodeSize = nodeSize;
             this.config.totalNodeSize = totalNodeSize;
 
-            this.config.end = [
-                Helper.getRandomInt(1, this.config.renderSize.x - 1),
-                Helper.getRandomInt(1, this.config.renderSize.y - 1)
-            ];
+            const [end, birdImage] = await Fetcher.getRandomEnd(this.config.renderSize);
 
-            this.config.start = [
-                Helper.getRandomInt(1, this.config.renderSize.x - 1),
-                Helper.getRandomInt(1, this.config.renderSize.y - 1)
-            ];
+            const [start, foxImage] = await Fetcher.getRandomStart(this.config.renderSize, end);
 
-            this.config.walls = this.generateRandomWall(this.config.start, this.config.end);
+            this.config.end = end;
+
+            this.config.start = start;
+
+            this.config.walls = this.generateRandomWall(start, end);
 
             this.updateCache();
         }
@@ -155,7 +130,12 @@ var app = app || {};
         generateRandomWall([
             startX, startY
         ], [endX, endY]) {
+
+            console.log(startX, endX);
+            console.log(startY, endY);
             const randomPoint = new Vector2(Helper.getRandomInt(startX, endX), Helper.getRandomInt(startY, endY));
+
+            console.log(randomPoint);
 
             const wallShapes = {
                 T1: [

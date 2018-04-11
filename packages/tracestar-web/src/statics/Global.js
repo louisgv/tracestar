@@ -11,8 +11,12 @@
 var app = app || {};
 
 app.Global = Object.freeze({
+    DEBUG: window.location.host === 'localhost:3000',
     HALF_PI: Math.PI / 2,
     TWO_PI: Math.PI * 2,
+    API_URL: window.location.host === 'localhost:3000'
+        ? 'http://localhost:8080'
+        : 'http://tracestar-server-tracestar-server.193b.starter-ca-central-1.openshiftapps.com',
     COLOR: {
         BLANK: "#EEEEEE",
         WALL: "#333333",

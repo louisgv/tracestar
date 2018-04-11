@@ -31,19 +31,17 @@ var app = app || {};
 
             this.grid = new Grid();
             this.gridCtx = Helper.createCtx();
-
-            this.setupCache();
         }
 
         // Cache the size as well as update config for some child module
-        setupCache() {
+        async setupCache() {
             this.renderCanvas.size = new Vector2(window.innerWidth, window.innerHeight);
             this.renderCanvas.center = this.renderCanvas.size.iMul(0.5);
 
             Helper.setFullsizeCtx(this.gridCtx);
             Helper.setFullsizeCtx(this.renderCanvasCtx);
 
-            this.grid.updateConfig(this.renderCanvas);
+            await this.grid.updateConfig(this.renderCanvas);
         }
 
         /** Setup UI for the drawpad */

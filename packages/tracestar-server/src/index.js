@@ -1,24 +1,44 @@
-const http = require('http');
+require('dotenv').config();
 
-const port = process.env.PORT || process.env.NODE_PORT || 8000;
+import http from 'http';
+import querystring from 'querystring';
+
+import {getPostData} from './utils';
+
+import {getRandomStart} from './start';
+
+import {getRandomEnd} from './end';
+
+const port = process.env.PORT || process.env.NODE_PORT || 8080;
 
 async function onRequest(req, res) {
 
     const headers = {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Methods': 'POST',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
     };
 
     res.writeHead(200, headers);
 
+    const data = await getPostData(req, res);
+
+    console.log('POST data: ', data);
+
+    // Helper.getRandomInt(1, this.config.renderSize.x - 1);
+
     switch (req.url) {
-        case '/start':
-            res.write(JSON.stringify({x:0, y: 0}));
-            break;
         case '/end':
-            res.write(JSON.stringify({x:0, y: 0}));
+            const endPoint = await getRandomEnd(data);
+            res.write(JSON.stringify(endPoint));
+            break;
+        case '/start':
+            const startPoint = await getRandomStart(data);
+            res.write(JSON.stringify(startPoint));
+            break;
+        case '/wall':
+
             break;
         default:
             res.writeHead(404, headers);
