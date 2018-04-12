@@ -30,6 +30,28 @@ var app = app || {};
             img.addEventListener('abort', reject);
         }),
 
+        // Show the pause overlay
+        showPause() {
+            document.querySelector('#halt-notice').classList.add('enabled');
+        },
+
+        // Hide the pause overlay
+        hidePause() {
+            document.querySelector('#halt-notice').classList.remove('enabled');
+        },
+
+        /* Show the notice board */
+        showNotice(message) {
+            const noticeEl = document.querySelector('#generic-notice');
+            noticeEl.innerHTML = message;
+            noticeEl.classList.add('enabled');
+        },
+
+        /* Hide the notice board */
+        hideNotice() {
+            document.querySelector('#generic-notice').classList.remove('enabled');
+        },
+
         // Create a quick canvas context for temporary drawing.
         createCtx: () => document.createElement("canvas").getContext('2d'),
 

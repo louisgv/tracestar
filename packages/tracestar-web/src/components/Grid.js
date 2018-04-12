@@ -65,6 +65,8 @@ var app = app || {};
             Initialize the cache for label and configuration
         */
         updateCache() {
+            this.config.pathFound = false;
+
             const sixthSize = this.config.nodeSize / 6;
             const fifthSize = this.config.nodeSize / 5;
 
@@ -182,6 +184,12 @@ var app = app || {};
             neighbors.forEach((n) => {
                 if (n.color == Global.COLOR.END) {
                     this.config.pathFound = true;
+
+                    Helper.showNotice(`
+                        <h2>- PATH FOUND! -</h2>
+                        <p>press <b>R</b> to restart</p>
+                    `);
+
                     let trace = currentNode;
                     while (trace.color != Global.COLOR.START) {
                         trace.color = Global.COLOR.PATH;
