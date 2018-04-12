@@ -9,7 +9,7 @@ import {getRandomStart} from './start';
 
 import {getRandomEnd} from './end';
 
-const port = process.env.PORT || process.env.NODE_PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
+const port = process.env.PORT || process.env.NODE_PORT || 8080;
 
 async function onRequest(req, res) {
 
