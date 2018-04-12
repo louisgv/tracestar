@@ -15,10 +15,10 @@ export async function getRandomInt(a, b, n = 1) {
     const max = Math.max(a, b);
     try {
         if (process.env.TEST) {
-            throw new Error('RANDOM.ORG IS IN TESTING');
+            throw 999;
         }
         if (requestsLeft <= 180) {
-            throw new Error('RANDOM.ORG LIMIT GETTING LOW');
+            throw 666;
         }
         const reqId = (new Date()).getTime();
         const data = await fetch('https://api.random.org/json-rpc/1/invoke', {
@@ -26,8 +26,8 @@ export async function getRandomInt(a, b, n = 1) {
             headers,
             body: JSON.stringify({
                 id: reqId,
-                jsonrpc: "2.0",
-                method: "generateIntegers",
+                jsonrpc: '2.0',
+                method: 'generateIntegers',
                 params: {
                     apiKey: process.env.RANDOM_ORG_API_KEY,
                     n,
@@ -48,9 +48,19 @@ export async function getRandomInt(a, b, n = 1) {
 
         return dataJson.result.random.data;
     } catch (e) {
-        console.error(e);
+        switch (e) {
+            case 999:
+                console.warn('RANDOM.ORG IS IN TESTING');
+                break;
+            case 666:
+                console.warn(`RANDOM.ORG LIMIT IS GETTING LOW : ${requestsLeft} REQ LEFT`);
+                break;
+            default:
+                console.error(e);
+        }
+        
         return Array.from({
             length: n
-        }, () => Math.floor(Math.random() * (max - min) + min));
+        }, () => Math.floor(Math.random() * (max + 1 - min) + min));
     }
 }

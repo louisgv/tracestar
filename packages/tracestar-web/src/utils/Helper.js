@@ -22,6 +22,14 @@ var app = app || {};
             return template.content.firstChild;
         },
 
+        /* Create an image asyncronously */
+        createImage: (url) => new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = url;
+            img.addEventListener('load', () => resolve(img));
+            img.addEventListener('abort', reject);
+        }),
+
         // Create a quick canvas context for temporary drawing.
         createCtx: () => document.createElement("canvas").getContext('2d'),
 

@@ -3,7 +3,7 @@
     in x,y pair coordinate point, minus the origin
 */
 
-export const wallType = {
+export const wallType = Object.freeze({
     T1: [
         [
             -1, 0
@@ -136,6 +136,6 @@ export const wallType = {
             1, 0
         ]
     ]
-};
+});
 
-export const wallTypes = Object.key(wallType);
+export const wallTypes = Object.keys(wallType);

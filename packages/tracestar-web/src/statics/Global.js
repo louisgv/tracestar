@@ -16,7 +16,7 @@ app.Global = Object.freeze({
     TWO_PI: Math.PI * 2,
     API_URL: window.location.host === 'localhost:3000'
         ? 'http://localhost:8080'
-        : 'https://tracestar-server-exwsopcxzr.now.sh',
+        : 'https://tracestar-server-xmqkvrjysb.now.sh',
     COLOR: {
         BLANK: "#EEEEEE",
         WALL: "#333333",
@@ -30,12 +30,17 @@ app.Global = Object.freeze({
         END: "#EE34D2"
     },
     KEYBOARD: {
-        KEY_LEFT: 37,
-        KEY_UP: 38,
-        KEY_RIGHT: 39,
-        KEY_DOWN: 40,
-        KEY_SPACE: 32,
-        KEY_SHIFT: 16
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        DOWN: 40,
+        SPACE: 32,
+        SHIFT: 16,
+        ESC: 27,
+        CTRL: 17,
+        r: 82,
+        s: 83,
+        v: 86,
     },
     BASIC_SHAPE: {
         Circle: 'Circle',

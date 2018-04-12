@@ -65,7 +65,7 @@ function getEdge(bound, pos, min) {
     Grab a random bird image from random shibe API
 */
 async function getBirdImage() {
-    const data = await fetch('http://shibe.online/api/birds');
+    const data = await fetch('https://shibe.online/api/birds');
 
     const dataJson = await data.json();
 

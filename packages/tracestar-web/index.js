@@ -40,6 +40,10 @@ var app = app || {};
                     }
                     break;
                 }
+            case 'R':
+                {
+                    main.setupCache();
+                }
             default:
         }
     });

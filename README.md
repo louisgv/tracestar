@@ -18,13 +18,22 @@ Tracestar is a game for people to experiment with A star and really get to feel 
 
 # Setup
 
-```sh
-    npm i -g browser-sync
+Install global tooling dependencies:
+
+```
+npm i -g lerna browser-sync
 ```
 
-```sh
-    browser-sync start --server --files "."
+Get yarn, either via package or via npm.
+Run these anywhere within the project:
+
 ```
+lerna bootstrap
+lerna run build
+lerna run --parallel watch
+```
+
+Navigate to [localhost:3000](http://localhost:3000/)
 
 # Credits
 

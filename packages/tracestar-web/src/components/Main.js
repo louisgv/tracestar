@@ -8,14 +8,9 @@
 // An IIFE ("Iffy") - see the notes in mycourses
 "use strict";
 var app = app || {};
-(function () {
+(function() {
 
-    const {
-        Random,
-        Interface,
-        Global,
-        Helper
-    } = app;
+    const {Random, Interface, Global, Helper} = app;
 
     app.Main = class {
         constructor() {
@@ -54,20 +49,36 @@ var app = app || {};
             cancelAnimationFrame(this.animationID);
             this.paused = false;
             this.update();
+        }
 
+        showNotice(message) {
+            const noticeEl = document.querySelector('#generic-notice');
+            noticeEl.innerHTML = message;
+            noticeEl.classList.add('enabled');
+        }
+
+        hideNotice() {
+            document.querySelector('#generic-notice').classList.remove('enabled');
         }
 
         /** Setup any caching layer of any module it depends on.
          *
          */
         async setupCache() {
+            this.showNotice('- RANDOMIZING -');
             await this.drawpad.setupCache();
+
+            await Helper.wait(900);
+
+            this.hideNotice();
         }
 
         /** UI Setup for the main application
          *
          */
         async setupUI() {
+            this.showNotice('- LOADING -');
+
             const toggleUIButton = document.querySelector('#toggleui-button');
             toggleUIButton.addEventListener('click', Helper.toggleUIElement);
 
@@ -79,6 +90,7 @@ var app = app || {};
 
             toggleUIButton.dispatchEvent(new Event('click'));
             this.initialized = true;
+            this.hideNotice();
         }
 
         /** Update loop for animation

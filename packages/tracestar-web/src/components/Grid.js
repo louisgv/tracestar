@@ -15,9 +15,10 @@ var app = app || {};
         constructor(config = {
             sideScale: 0.16,
             padding: 0.02,
+            minHeuristic: 3,
             start: [],
             end: [],
-            walls: [],
+            wall: [],
             pathFound: false
         }) {
             this.config = config;
@@ -39,19 +40,30 @@ var app = app || {};
             this.config.nodeSize = nodeSize;
             this.config.totalNodeSize = totalNodeSize;
 
-            const [end, birdImage] = await Fetcher.getRandomEnd(this.config.renderSize);
+            const [end, birdImageUrl] = await Fetcher.getRandomEnd(this.config.renderSize);
 
-            const [start, foxImage] = await Fetcher.getRandomStart(this.config.renderSize, end);
+            const [start, foxImageUrl] = await Fetcher.getRandomStart(this.config.renderSize, end, this.config.minHeuristic);
+
+            const [wall, birdImage, foxImage] = await Promise.all([
+                Fetcher.getRandomWall(start, end),
+                Helper.createImage(birdImageUrl),
+                Helper.createImage(foxImageUrl)
+            ]);
+
+            this.config.endImage = birdImage;
+            this.config.startImage = foxImage;
 
             this.config.end = end;
-
             this.config.start = start;
 
-            this.config.walls = this.generateRandomWall(start, end);
+            this.config.wall = wall;
 
             this.updateCache();
         }
 
+        /*
+            Initialize the cache for label and configuration
+        */
         updateCache() {
             const sixthSize = this.config.nodeSize / 6;
             const fifthSize = this.config.nodeSize / 5;
@@ -95,10 +107,11 @@ var app = app || {};
 
             this.config.texts = Object.keys(this.config.textSize);
 
-            this.nodeCache = new Array(this.config.renderSize.x);
+            this.nodeCache = Array.from({
+               length: this.config.renderSize.x
+           }, () => new Array(this.config.renderSize.y));
 
             for (let x = 0; x < this.config.renderSize.x; x++) {
-                this.nodeCache[x] = new Array(this.config.renderSize.y);
                 for (let y = 0; y < this.config.renderSize.y; y++) {
                     this.nodeCache[x][y] = new GridNode(new Vector2(x * (this.config.totalNodeSize) + this.config.nodeSize, y * (this.config.totalNodeSize) + this.config.nodeSize,), this.config.nodeSize, this.config, Global.COLOR.BLANK, Global.COLOR.WALL);
 
@@ -106,8 +119,10 @@ var app = app || {};
                 }
             }
 
-            this.config.walls.forEach(([x, y]) => {
-                this.nodeCache[x][y].color = Global.COLOR.WALL;
+            this.config.wall.forEach(([x, y]) => {
+                if (this.nodeCache[x] && this.nodeCache[x][y]) {
+                    this.nodeCache[x][y].color = Global.COLOR.WALL;
+                }
             });
 
             const startNode = this.nodeCache[this.config.start[0]][this.config.start[1]];
@@ -117,167 +132,16 @@ var app = app || {};
                 topLeft: 'h: '
             };
 
+            startNode.imageCache = this.config.startImage;
+
             const endNode = this.nodeCache[this.config.end[0]][this.config.end[1]];
 
             endNode.color = Global.COLOR.END;
             endNode.text.bottomCenter = 'END';
             endNode.textLabel = {};
+            endNode.imageCache = this.config.endImage;
 
             this.markNeighbors(this.config.start[0], this.config.start[1]);
-        }
-
-        // Generate a random wall
-        generateRandomWall([
-            startX, startY
-        ], [endX, endY]) {
-
-            console.log(startX, endX);
-            console.log(startY, endY);
-            const randomPoint = new Vector2(Helper.getRandomInt(startX, endX), Helper.getRandomInt(startY, endY));
-
-            console.log(randomPoint);
-
-            const wallShapes = {
-                T1: [
-                    [
-                        -1, 0
-                    ],
-                    [
-                        1, 0
-                    ],
-                    [
-                        0, 1
-                    ]
-                ],
-                T2: [
-                    [
-                        0, -1
-                    ],
-                    [
-                        1, 0
-                    ],
-                    [
-                        0, 1
-                    ]
-                ],
-                T3: [
-                    [
-                        1, 0
-                    ],
-                    [
-                        -1, 0
-                    ],
-                    [
-                        0, -1
-                    ]
-                ],
-                T4: [
-                    [
-                        0, 1
-                    ],
-                    [
-                        -1, 0
-                    ],
-                    [
-                        0, -1
-                    ]
-                ],
-                LR1: [
-                    [
-                        2, 0
-                    ],
-                    [
-                        1, 0
-                    ],
-                    [
-                        0, 1
-                    ]
-                ],
-                LR2: [
-                    [
-                        2, 0
-                    ],
-                    [
-                        1, 0
-                    ],
-                    [
-                        0, -1
-                    ]
-                ],
-                LR3: [
-                    [
-                        -2, 0
-                    ],
-                    [
-                        -1, 0
-                    ],
-                    [
-                        0, -1
-                    ]
-                ],
-                LR4: [
-                    [
-                        -2, 0
-                    ],
-                    [
-                        -1, 0
-                    ],
-                    [
-                        0, 1
-                    ]
-                ],
-                LL1: [
-                    [
-                        0, 2
-                    ],
-                    [
-                        0, 1
-                    ],
-                    [
-                        1, 0
-                    ]
-                ],
-                LL2: [
-                    [
-                        0, 2
-                    ],
-                    [
-                        0, 1
-                    ],
-                    [
-                        -1, 0
-                    ]
-                ],
-                LL3: [
-                    [
-                        0, -2
-                    ],
-                    [
-                        0, -1
-                    ],
-                    [
-                        -1, 0
-                    ]
-                ],
-                LL4: [
-                    [
-                        0, -2
-                    ],
-                    [
-                        0, -1
-                    ],
-                    [
-                        1, 0
-                    ]
-                ]
-            };
-
-            const wallShape = wallShapes.T3;
-
-            return wallShape.map(([x, y]) => [
-                randomPoint.x + x,
-                randomPoint.y + y
-            ]);
         }
 
         // Return the heuristic for a point given an end
@@ -307,6 +171,9 @@ var app = app || {};
             return neighbors;
         }
 
+        /*
+            Mark all neighbor of the node
+        */
         markNeighbors(x, y) {
             const currentNode = this.nodeCache[x][y];
 
@@ -348,10 +215,12 @@ var app = app || {};
             }
         }
 
+        /* Check if the node is available */
         isAvailableNode(currentNode) {
             return currentNode.color == Global.COLOR.BLANK || currentNode.color == Global.COLOR.QUEUED;
         }
 
+        /* Process and map mouse input into the grid */
         processMouseInput(mouse) {
             const x = Math.floor((mouse.x - this.config.nodeSize * 1.5) / (this.config.totalNodeSize)) + 1;
             const y = Math.floor((mouse.y - this.config.nodeSize * 1.5) / (this.config.totalNodeSize)) + 1;
@@ -367,7 +236,7 @@ var app = app || {};
             }
         }
 
-        // Draw the Pattern into the ctx
+        // Draw the Grid into the ctx
         draw(ctx) {
             ctx.save();
             ctx.fillStyle = 'black';

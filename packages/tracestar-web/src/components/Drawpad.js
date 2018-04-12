@@ -53,6 +53,7 @@ var app = app || {};
             this.renderCanvas.addEventListener('mouseout', (e) => this.onMouseOutCanvas(e));
         }
 
+        // Handle mouse down event
         onMouseDownCanvas(e) {
             this.dragging = true;
 
@@ -60,6 +61,7 @@ var app = app || {};
             this.grid.processMouseInput(mouse);
         }
 
+        // Handle mouse move event
         onMouseMoveCanvas(e) {
             Helper.clearCanvas(this.renderCanvasCtx);
 
@@ -71,6 +73,7 @@ var app = app || {};
 
         }
 
+        // Handle mouse up event
         onMouseUpCanvas(e) {
 
             this.dragging = false;

@@ -9,6 +9,8 @@ import {getRandomStart} from './start';
 
 import {getRandomEnd} from './end';
 
+import {getRandomWall} from './wall';
+
 const port = process.env.PORT || process.env.NODE_PORT || 8080;
 
 async function onRequest(req, res) {
@@ -38,7 +40,8 @@ async function onRequest(req, res) {
             res.write(JSON.stringify(startPoint));
             break;
         case '/wall':
-
+            const wall = await getRandomWall(data);
+            res.write(JSON.stringify(wall));
             break;
         default:
             res.writeHead(404, headers);

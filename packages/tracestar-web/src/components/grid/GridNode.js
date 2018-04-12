@@ -23,7 +23,6 @@ var app = app || {};
             this.text = text;
             this.textColor = textColor;
 
-            // TODO: Cache these config somewhere else
             this.textSize = textConfig.textSize;
 
             this.textAlignAndBaseline = textConfig.textAlignAndBaseline;
@@ -35,14 +34,22 @@ var app = app || {};
             this.textLabel = textConfig.textLabel;
         }
 
+        // Draw the grid into the canvas
         draw(ctx) {
             ctx.save();
             ctx.fillStyle = this.color;
 
             ctx.translate(this.pos.x - this.halfSize, this.pos.y - this.halfSize);
-            ctx.fillRect(0, 0, this.size, this.size);
 
-            ctx.fillStyle = this.textColor;
+            if (this.imageCache) {
+                ctx.globalAlpha = 0.3;
+                ctx.drawImage(this.imageCache, 0, 0, this.size, this.size);
+                ctx.globalAlpha = 1.0;
+            } else {
+                ctx.fillRect(0, 0, this.size, this.size);
+                ctx.fillStyle = this.textColor;
+            }
+
             this.texts.forEach((t) => {
                 if (this.text[t] == 0) {
                     return;

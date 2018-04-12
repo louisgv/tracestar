@@ -26,19 +26,19 @@ var app = app || {};
             return data.json();
         }
 
-        static async getRandomStart(bound, end) {
+        static async getRandomStart(bound, end, limit) {
             const data = await fetch(`${Global.API_URL}/start`, {
                 method: "POST",
-                body: JSON.stringify({bound, end})
+                body: JSON.stringify({bound, end, limit})
             });
 
             return data.json();
         }
 
-        static async getRandomWall(bound, end) {
+        static async getRandomWall(start, end) {
             const data = await fetch(`${Global.API_URL}/wall`, {
                 method: "POST",
-                body: JSON.stringify({bound, start, end})
+                body: JSON.stringify({start, end})
             });
 
             return data.json();
