@@ -36,12 +36,12 @@ function getStartWithDecentHeuristic(xPool, yPool, end, limit) {
 }
 
 /*
-    Grab a random fox image from random fox API
+    Grab a random dog image from dog.ceo API
 */
 async function getFoxImage() {
-    const data = await fetch('https://randomfox.ca/floof/');
+    const data = await fetch('https://dog.ceo/api/breeds/image/random');
 
     const dataJson = await data.json();
 
-    return dataJson.image;
+    return dataJson.message;
 }
