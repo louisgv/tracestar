@@ -43,8 +43,8 @@ export async function getRandomInt(a, b, n = 1) {
         if (dataJson.id !== reqId) {
             throw new Error('RANDOM.ORG ID MISMATCH!');
         }
-
-        requestsLeft = dataJson.requestsLeft;
+        
+        requestsLeft = dataJson.result.requestsLeft;
         console.log(`REQUESTS LEFT: ${requestsLeft}`);
 
         return dataJson.result.random.data;
