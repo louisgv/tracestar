@@ -40,17 +40,17 @@ var app = app || {};
             this.config.nodeSize = nodeSize;
             this.config.totalNodeSize = totalNodeSize;
 
-            const [end, birdImageUrl] = await Fetcher.getRandomEnd(this.config.renderSize);
+            const [end, starImageUrl] = await Fetcher.getRandomEnd(this.config.renderSize);
 
             const [start, foxImageUrl] = await Fetcher.getRandomStart(this.config.renderSize, end, this.config.minHeuristic);
 
-            const [wall, birdImage, foxImage] = await Promise.all([
+            const [wall, starImage, foxImage] = await Promise.all([
                 Fetcher.getRandomWall(start, end),
-                Helper.createImage(birdImageUrl),
+                Helper.createImage(starImageUrl),
                 Helper.createImage(foxImageUrl)
             ]);
 
-            this.config.endImage = birdImage;
+            this.config.endImage = starImage;
             this.config.startImage = foxImage;
 
             this.config.end = end;
@@ -184,17 +184,21 @@ var app = app || {};
             neighbors.forEach((n) => {
                 if (n.color == Global.COLOR.END) {
                     this.config.pathFound = true;
-
-                    Helper.showNotice(`
-                        <h2>- PATH FOUND! -</h2>
-                        <p>press <b>R</b> to restart</p>
-                    `);
-
+                    let cost = 0;
                     let trace = currentNode;
                     while (trace.color != Global.COLOR.START) {
                         trace.color = Global.COLOR.PATH;
                         trace = trace.origin;
+                        cost ++;
                     }
+
+                    Helper.showNotice(`
+                        <h2>- PATH FOUND! -</h2>
+                        <h3> COST : ${cost} STEPS </h3>
+                        <p>press <b>R</b> to restart</p>
+                    `);
+
+
                 }
 
                 if (!this.isAvailableNode(n)) {

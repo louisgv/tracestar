@@ -108,8 +108,7 @@ footer h4, footer h5 {
     transform: scale(1) !important;
 }
 
-#halt-notice,
-#generic-notice {
+#halt-notice, #generic-notice {
     position: absolute;
     transition: 0.45s;
     opacity: 0;
@@ -128,6 +127,23 @@ footer h4, footer h5 {
     font-size: 4.5em;
     background: black;
     color: white;
+}
+
+#instruction-right, #instruction-left {
+    position: absolute;
+    font-family: monospace;
+    color: #eee;
+}
+
+#instruction-left {
+    left: 2.5em;
+    bottom: 5.4em;
+}
+
+#instruction-right {
+    text-align: right;
+    bottom: 5.4em;
+    right: 2.5em;
 }
 
 .toggle-target {

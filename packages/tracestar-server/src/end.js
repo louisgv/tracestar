@@ -12,7 +12,7 @@ let cachedRandom = [];
 export async function getRandomEnd({bound}) {
 
     try {
-        const birdImagePromise = getBirdImage();
+        const starImagePromise = getStarImage();
 
         let cachedRandomPromise = null;
 
@@ -20,7 +20,7 @@ export async function getRandomEnd({bound}) {
             cachedRandomPromise = getRandomInt(0, 3, 1e4);
         }
 
-        const [birdImage, newCachedRandom] = await Promise.all([birdImagePromise, cachedRandomPromise]);
+        const [starImage, newCachedRandom] = await Promise.all([starImagePromise, cachedRandomPromise]);
 
         if (newCachedRandom) {
             cachedRandom = newCachedRandom;
@@ -28,7 +28,7 @@ export async function getRandomEnd({bound}) {
 
         const pos = getEdge(bound, cachedRandom.pop(), 1);
 
-        return [pos, birdImage];
+        return [pos, starImage];
     } catch (e) {
         console.error('GET END IS DOWN:', e);
         return [[1,1], ''];
@@ -62,12 +62,12 @@ function getEdge(bound, pos, min) {
 }
 
 /*
-    Grab a random bird image from random shibe API
+    Grab a star image from the NASA image of the day API
 */
-async function getBirdImage() {
-    const data = await fetch('http://shibe.online/api/birds');
+async function getStarImage() {
+    const data = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API_KEY}`);
 
     const dataJson = await data.json();
 
-    return dataJson[0];
+    return dataJson.url;
 }

@@ -42,7 +42,7 @@ var app = app || {};
             ctx.translate(this.pos.x - this.halfSize, this.pos.y - this.halfSize);
 
             if (this.imageCache) {
-                ctx.globalAlpha = 0.3;
+                ctx.globalAlpha = 0.7;
                 ctx.drawImage(this.imageCache, 0, 0, this.size, this.size);
                 ctx.globalAlpha = 1.0;
             } else {

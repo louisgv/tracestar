@@ -72,16 +72,13 @@ var app = app || {};
         async setupUI() {
             Helper.showNotice(`<h2>- LOADING -</h2>`);
 
-            const toggleUIButton = document.querySelector('#toggleui-button');
-            toggleUIButton.addEventListener('click', Helper.toggleUIElement);
+            this.toggleUIButton = document.querySelector('#toggleui-button');
+            this.toggleUIButton.addEventListener('click', Helper.toggleUIElement);
 
             await this.drawpad.setupUI();
 
             await this.drawpad.setupCache();
 
-            await Helper.wait(900);
-
-            toggleUIButton.dispatchEvent(new Event('click'));
             this.initialized = true;
             Helper.hideNotice();
         }

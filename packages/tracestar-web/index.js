@@ -43,6 +43,12 @@ var app = app || {};
             case 'R':
                 {
                     main.setupCache();
+                    break;
+                }
+            case 'O':
+                {
+                    main.toggleUIButton.dispatchEvent(new Event('click'));
+                    break;
                 }
             default:
         }

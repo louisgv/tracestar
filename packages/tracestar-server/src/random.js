@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 fetch.Promise = Promise;
 
 // Temporary non-persistent to keep track of limit
-let requestsLeft = 0;
+let requestsLeft = -1;
 
 /* Get random integer from random.org API */
 export async function getRandomInt(a, b, n = 1) {
@@ -17,7 +17,7 @@ export async function getRandomInt(a, b, n = 1) {
         if (process.env.TEST) {
             throw 999;
         }
-        if (requestsLeft <= 180) {
+        if (requestsLeft > 0 && requestsLeft <= 180) {
             throw 666;
         }
         const reqId = (new Date()).getTime();
@@ -45,6 +45,7 @@ export async function getRandomInt(a, b, n = 1) {
         }
 
         requestsLeft = dataJson.requestsLeft;
+        console.log(`REQUESTS LEFT: ${requestsLeft}`);
 
         return dataJson.result.random.data;
     } catch (e) {
@@ -58,7 +59,7 @@ export async function getRandomInt(a, b, n = 1) {
             default:
                 console.error(e);
         }
-        
+
         return Array.from({
             length: n
         }, () => Math.floor(Math.random() * (max + 1 - min) + min));
