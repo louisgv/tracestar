@@ -34,6 +34,16 @@ var app = app || {};
 
             return data.json();
         }
+
+        static async getRandomWall(bound, end) {
+            const data = await fetch(`${Global.API_URL}/wall`, {
+                method: "POST",
+                body: JSON.stringify({bound, start, end})
+            });
+
+            return data.json();
+        }
+
     };
 
 }());
