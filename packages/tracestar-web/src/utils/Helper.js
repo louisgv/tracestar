@@ -12,16 +12,60 @@ var app = app || {};
 
     const {Vector2} = app;
 
-    app.Helper = {
-        // Create html element. Code adapted from
-        // https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
-        createElement(html) {
-            const template = document.createElement('template');
-            html = html.trim(); // Never return a text node of whitespace as the result
-            template.innerHTML = html;
-            return template.content.firstChild;
-        },
+    // Showing a dialog modal
+    async function showDialog(text, nextText = "NEXT", fadeDuration = 500) {
 
+        const announceEl = document.querySelector('#announce-overlay');
+
+        const announceText = announceEl.querySelector('#announce-text');
+
+        announceText.innerHTML = text;
+
+        const dialogButton = dialogCloseButton(nextText);
+
+        announceEl.appendChild(dialogButton);
+        announceEl.classList.add("Show");
+
+        await new Promise((resolve, reject) => {
+            dialogButton.addEventListener('click', resolve);
+        });
+
+        announceEl.classList.remove("Show");
+
+        await wait(fadeDuration);
+
+        dialogButton.remove();
+    }
+
+    // Generate the dialog close button
+    function dialogCloseButton(text = "NEXT") {
+        const button = createElement(`<button class="dialog-button"></button>`);
+
+        button.innerHTML = text;
+
+        return button;
+    }
+
+    // Create html element. Code adapted from
+    // https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
+    function createElement(html) {
+        const template = document.createElement('template');
+        html = html.trim(); // Never return a text node of whitespace as the result
+        template.innerHTML = html;
+        return template.content.firstChild;
+    }
+
+    // Asyncronously wait for a duration in ms
+    function wait(duration) {
+        return new Promise(function(resolve, reject) {
+            setTimeout(resolve, duration);
+        });
+    }
+
+    app.Helper = {
+        createElement,
+        showDialog,
+        wait,
         /* Create an image asyncronously */
         createImage: (url) => new Promise((resolve, reject) => {
             const img = new Image();
@@ -86,11 +130,6 @@ var app = app || {};
         },
         // Return a random between min and max
         getRandomInt: (a, b) => Math.floor(Math.random() * Math.abs(a - b) + Math.min(a, b)),
-
-        // Asyncronously wait for a duration in ms
-        wait: (duration) => new Promise(function(resolve, reject) {
-            setTimeout(resolve, duration);
-        }),
 
         // Get Mouse position relative to the element
         getMouse: ({pageX, pageY, target}) => new Vector2(pageX - target.offsetLeft, pageY - target.offsetTop),

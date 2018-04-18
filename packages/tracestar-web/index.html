@@ -32,6 +32,8 @@
 	      href="./stylesheets/select.css">
 	<link rel="stylesheet"
 	      href="./stylesheets/slider.css">
+	<link rel="stylesheet"
+	      href="./stylesheets/announce.css">
 
 	<link rel="stylesheet"
 	      href="./index.css">
@@ -104,9 +106,13 @@
 		- PAUSED -
 	</div>
 
+	<div id="announce-overlay"
+	     class="overlay">
+		<div id="announce-text"></div>
+	</div>
+
 	<div id="generic-notice"
 	     class="absolute-full-screen">
-		- LOADING . . . -
 	</div>
 
 	<div id="drawpad-container"></div>
@@ -124,7 +130,8 @@
 
 	</div>
 
-	<h5 class="toggle-target" id="instruction-left">
+	<h5 class="toggle-target"
+	    id="instruction-left">
 		Click GREEN tile: Explore Path
 		<br />
 		<b>Green tile: explorable path</b>
@@ -141,12 +148,13 @@
 		Press R: Randomize the board
 
 	</h5>
-	<h5 class="toggle-target" id="instruction-right">
-		<b>h: heuristic.</b>
+	<h5 class="toggle-target"
+	    id="instruction-right">
+		<b>"h": heuristic.</b>
 		<br />
-		<b>g: cost from start.</b>
+		<b>"g": cost from start.</b>
 		<br />
-		<b>F: total cost, or h + g.</b>
+		<b>"F": total cost, or h + g.</b>
 		<br />
 		<b>Hint:</b> Chase the tile with the lowest F.
 		<br />

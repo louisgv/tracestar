@@ -1,0 +1,54 @@
+#announce-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#announce-overlay h1 {
+    text-align: center;
+    color: white;
+}
+
+#announce-overlay.Show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#announce-overlay .dialog-button {
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    padding: 1em 2em;
+    text-align: center;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: 300% 100%;
+    border-radius: 50px;
+    transition: all .4s ease-in-out;
+    background-image: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
+    box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
+}
+
+#announce-overlay p {
+    color: white;
+    text-align: center;
+    width: 50vw;
+}
+
+.dialog-button:active {
+    transform: scale(1.35);
+}
+
+.dialog-button:hover {
+    background-position: 99% 0;
+}
+
+.dialog-button:focus {
+    outline: none;
+}

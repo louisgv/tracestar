@@ -195,3 +195,18 @@ footer h4, footer h5 {
 .generic-label span {
     padding: 3px 1em;
 }
+
+.overlay {
+	width: 100vw;
+	height: 100vh;
+
+	background: rgba(0, 0, 0, 0.81);
+
+	position: absolute;
+
+	z-index: 999;
+
+	overflow-x: hidden;
+
+	transition: 0.45s;
+}

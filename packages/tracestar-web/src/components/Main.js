@@ -81,6 +81,17 @@ var app = app || {};
 
             this.initialized = true;
             Helper.hideNotice();
+
+            Helper.showDialog(`
+                <h1>Welcome to TraceStar!</h1>
+                <p>
+                    This is an educational application that seeks to show you how the A* path finding algorithm work. You will be the "Priority Queue" of the A* program, where you will determine which block should the algorithm choose next!
+                <p/>
+                <p>
+                    Click a GREEN tile to advance toward that tile. The goal is to find a path from the START to the END with the least amount of movement.
+                <p/>
+                <p>Have fun!</p>
+            `, 'START');
         }
 
         /** Update loop for animation
