@@ -76,7 +76,7 @@ footer h4, footer h5 {
     z-index: 5;
 }
 
-#brand, footer {
+footer {
     pointer-events: none;
 }
 
