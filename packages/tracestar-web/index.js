@@ -9,16 +9,21 @@
 var app = app || {};
 (function() {
 
-    const {Main, Drawpad, Keyboard, Sound} = app;
+    const {Main, Drawpad, Keyboard, Sound, Helper} = app;
 
     const main = new Main();
 
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
         main.sound = new Sound();
         main.keyboard = new Keyboard();
         main.drawpad = new Drawpad();
 
         main.init();
+
+        await Helper.wait(9000);
+        if (!main.initialized) {
+            location.reload();
+        }
     });
 
     window.addEventListener('resize', () => main.setupCache());

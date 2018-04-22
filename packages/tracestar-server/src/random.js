@@ -41,9 +41,13 @@ export async function getRandomInt(a, b, n = 1) {
         const dataJson = await data.json();
 
         if (dataJson.id !== reqId) {
-            throw new Error('RANDOM.ORG ID MISMATCH!');
+            throw 333;
         }
-        
+
+        if (dataJson.error) {
+            throw dataJson.error;
+        }
+
         requestsLeft = dataJson.result.requestsLeft;
         console.log(`REQUESTS LEFT: ${requestsLeft}`);
 
@@ -56,6 +60,8 @@ export async function getRandomInt(a, b, n = 1) {
             case 666:
                 console.warn(`RANDOM.ORG LIMIT IS GETTING LOW : ${requestsLeft} REQ LEFT`);
                 break;
+            case 333:
+                console.warn('RANDOM.ORG ID MISMATCH!');
             default:
                 console.error(e);
         }
