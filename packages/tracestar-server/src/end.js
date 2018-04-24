@@ -69,5 +69,9 @@ async function getStarImage() {
 
     const dataJson = await data.json();
 
+    if (dataJson.media_type === 'video') {
+        return 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Merope.jpg';
+    }
+
     return dataJson.url;
 }
