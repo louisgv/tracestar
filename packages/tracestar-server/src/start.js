@@ -9,15 +9,15 @@ import {getRandomInt} from './random';
 */
 export async function getRandomStart({bound, end, limit}) {
 
-    const [xPool, yPool, foxImage] = await Promise.all([
+    const [xPool, yPool, dogImage] = await Promise.all([
         getRandomInt(2, bound.x - 2, 1e4),
         getRandomInt(2, bound.y - 2, 1e4),
-        getFoxImage()
+        getDogImage()
     ]);
 
     return [
         getStartWithDecentHeuristic(xPool, yPool, end, limit),
-        foxImage
+        dogImage
     ];
 }
 
@@ -38,7 +38,7 @@ function getStartWithDecentHeuristic(xPool, yPool, end, limit) {
 /*
     Grab a random dog image from dog.ceo API
 */
-async function getFoxImage() {
+async function getDogImage() {
     const data = await fetch('https://dog.ceo/api/breeds/image/random');
 
     const dataJson = await data.json();

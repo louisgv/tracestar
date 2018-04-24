@@ -42,16 +42,16 @@ var app = app || {};
 
             const [end, starImageUrl] = await Fetcher.getRandomEnd(this.config.renderSize);
 
-            const [start, foxImageUrl] = await Fetcher.getRandomStart(this.config.renderSize, end, this.config.minHeuristic);
+            const [start, dogImageUrl] = await Fetcher.getRandomStart(this.config.renderSize, end, this.config.minHeuristic);
 
-            const [wall, starImage, foxImage] = await Promise.all([
+            const [wall, starImage, dogImage] = await Promise.all([
                 Fetcher.getRandomWall(start, end),
-                Helper.createImage(starImageUrl),
-                Helper.createImage(foxImageUrl)
+                Helper.createImage(starImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/6/6a/Merope.jpg'),
+                Helper.createImage(dogImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Husky_on_San_Francisco_sidewalk.jpg/480px-Husky_on_San_Francisco_sidewalk.jpg')
             ]);
 
             this.config.endImage = starImage;
-            this.config.startImage = foxImage;
+            this.config.startImage = dogImageUrl;
 
             this.config.end = end;
             this.config.start = start;
