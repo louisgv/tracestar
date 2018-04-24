@@ -16,7 +16,7 @@ app.Global = Object.freeze({
     TWO_PI: Math.PI * 2,
     API_URL: window.location.host === 'localhost:3000'
         ? 'http://localhost:8080'
-        : 'https://tracestar-server-tcfbssvdrd.now.sh',
+        : 'https://tracestar-server-stkycmxkds.now.sh',
     COLOR: {
         BLANK: "#EEEEEE",
         WALL: "#333333",
